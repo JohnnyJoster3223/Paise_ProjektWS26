@@ -2,19 +2,8 @@
 Semesterprojekt für Principles of AI-based Software Engineering
 Reiter, Sapototzky, Weidinger
 ---
-# Smart Task Manager App
-Aufgabenverwaltung mit automatischer Priorisierung
-What it do?\n
-Anti Prokrastinations app\n
-Anlegen von benutzerdefinierten  Tasks\n
-Automatisierte Prioretisierung anhand Algorythmusß\n
-Aufgaben gewichtung und automatische Einteilung über den Tag\n
-\n\n
-## Zielgruppe:
-Prokrastinations bekämpfung, Tagesplanung, ZeitVerwaltung, Selbsthilfe\n
--> 
 
-# Smart Task Manager – Intelligente Aufgabenplanung gegen Prokrastination
+# Smart Task Manager – Intelligente Aufgabenplanung gegen Prokrastination (WIP)
 
 **Der Smart Task Manager ist eine intelligente Aufgabenmanagement-App, die Menschen dabei unterstützt, Prokrastination zu überwinden, ihren Alltag effizienter zu organisieren und ihre verfügbare Zeit optimal zu nutzen.** Im Mittelpunkt steht die Idee, klassische Aufgabenverwaltung mit einer automatisierten, algorithmusbasierten Priorisierung und einer strukturierten Tagesplanung zu verbinden.
 
