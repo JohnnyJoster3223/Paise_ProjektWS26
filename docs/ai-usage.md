@@ -42,3 +42,19 @@ The assistant turned the supplied app notes into a project/product description c
 ### AI Contribution
 
 The assistant inspected the repository and its existing AI usage documentation, created the branch `docs/ai-usage-github-feature-test` from `main`, and added this entry to `docs/ai-usage.md`. The documentation and commit message for this test are written in English.
+
+## Requirements: Selected Use Cases
+
+- **Date:** October 14, 2026
+- **AI tool:** ChatGPT (Codex), using the GitHub plugin
+- **Purpose:** Document the user-selected use cases in the requirements document and record the change in AI Usage.
+
+### User Prompt (English Translation)
+
+> Add 1–3, the new 4, 5, 8, 9, 10, 12, and 15 to the requirements document. Renumber them accordingly and record the commit in AI Usage again.
+
+### AI Contribution
+
+The assistant drafted 15 use cases based on the README, each with a user story, a short description under 50 words, and acceptance criteria. At the user's request, deadline and importance were combined into optional prioritization fields. The assistant transferred the ten selected use cases to `docs/requirements.md`, renumbered them UC-01 through UC-10, and added this entry to `docs/ai-usage.md`.
+
+Both documents are included in the same commit on `docs/ai-usage-github-feature-test` with the message: `docs: add ten selected use cases and record AI contribution`.
