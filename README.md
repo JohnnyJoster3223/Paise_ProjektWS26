@@ -18,5 +18,11 @@ The app is primarily designed for people who struggle with self-organization, ti
 
 **The ultimate goal of the Smart Task Manager is to transform a simple to-do list into an intelligent daily companion that goes beyond managing tasks, actively helping people take action and consistently work toward achieving their personal goals.**
 
+## Target Audience
+
+- **People Struggling with Procrastination** – Overcoming task avoidance and building productive routines.
+- **Students & University Students** – Managing assignments, exams, deadlines, and study schedules.
+- **Freelancers & Entrepreneurs** – Organizing projects, deadlines, and multiple responsibilities.
+- **Busy Individuals** – Balancing personal responsibilities, work, and everyday tasks.
 
 
