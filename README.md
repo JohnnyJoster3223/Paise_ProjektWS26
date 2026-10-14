@@ -1,19 +1,22 @@
 # Paise_ProjektWS26
-Semesterprojekt für Principles of AI-based Software Engineering
+
+
+Semesterproject for Principles of AI-based Software Engineering
+
+
 Reiter, Sapototzky, Weidinger
 ---
+# Smart Task Manager – Intelligent Task Planning to Overcome Procrastination
 
-# Smart Task Manager – Intelligente Aufgabenplanung gegen Prokrastination (WIP)
+**The Smart Task Manager is an intelligent task management app designed to help people overcome procrastination, organize their daily routines more efficiently, and make the most of their available time.** At its core, the app combines traditional task management with automated, algorithm-based prioritization and structured daily planning.
 
-**Der Smart Task Manager ist eine intelligente Aufgabenmanagement-App, die Menschen dabei unterstützt, Prokrastination zu überwinden, ihren Alltag effizienter zu organisieren und ihre verfügbare Zeit optimal zu nutzen.** Im Mittelpunkt steht die Idee, klassische Aufgabenverwaltung mit einer automatisierten, algorithmusbasierten Priorisierung und einer strukturierten Tagesplanung zu verbinden.
+Users can create and manage individual tasks, which are then evaluated, weighted, and automatically prioritized by an intelligent algorithm. Based on this prioritization, the app helps distribute upcoming tasks throughout the day, creating a clear and organized daily schedule. This not only simplifies everyday organization but also reduces the mental burden caused by overwhelming to-do lists and constant decisions about what to work on next.
 
-Nutzer können individuelle Aufgaben erstellen und verwalten, die anschließend durch einen intelligenten Algorithmus gewichtet und automatisch nach ihrer Priorität eingeordnet werden. Auf dieser Grundlage unterstützt die App dabei, anstehende Aufgaben sinnvoll über den Tag zu verteilen und eine klare, übersichtliche Tagesstruktur zu schaffen. Dadurch wird nicht nur die Organisation des Alltags vereinfacht, sondern auch die mentale Belastung reduziert, die durch unübersichtliche Aufgabenlisten und ständige Entscheidungen über den nächsten Arbeitsschritt entstehen kann.
+**A key focus of the app is actively combating procrastination.** Instead of overwhelming users with a long list of unorganized tasks, the Smart Task Manager provides clarity and guidance, helping them focus on the most important activities at any given moment. Automated planning aims to minimize decision-making barriers, make productive work easier, and encourage consistent task completion.
 
-**Ein besonderer Fokus liegt auf der aktiven Bekämpfung von Prokrastination.** Anstatt Nutzer mit einer Vielzahl ungeordneter Aufgaben zu konfrontieren, schafft der Smart Task Manager Orientierung und hilft dabei, den Fokus auf die jeweils wichtigsten Tätigkeiten zu richten. Die automatisierte Planung soll Entscheidungshürden minimieren, produktives Arbeiten erleichtern und eine kontinuierliche Aufgabenerledigung fördern.
+The app is primarily designed for people who struggle with self-organization, time management, or postponing important responsibilities. At the same time, it offers a practical solution for anyone looking to create a more structured, intentional, and productive daily routine.
 
-Die App richtet sich insbesondere an Menschen, die Schwierigkeiten mit Selbstorganisation, Zeitmanagement oder dem Aufschieben wichtiger Tätigkeiten haben. Gleichzeitig bietet sie eine praktische Lösung für alle, die ihren Alltag strukturierter, bewusster und produktiver gestalten möchten.
-
-**Das übergeordnete Ziel des Smart Task Managers ist es, aus einer einfachen To-do-Liste einen intelligenten Alltagsbegleiter zu machen, der nicht nur Aufgaben verwaltet, sondern Menschen aktiv dabei unterstützt, ins Handeln zu kommen und ihre persönlichen Ziele konsequenter zu verfolgen.**
+**The ultimate goal of the Smart Task Manager is to transform a simple to-do list into an intelligent daily companion that goes beyond managing tasks, actively helping people take action and consistently work toward achieving their personal goals.**
 
 
 
