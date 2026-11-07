@@ -74,3 +74,19 @@ Both documents are included in the same commit on `docs/ai-usage-github-feature-
 The assistant used the README and the ten existing use cases to draft requirements, distinguishing functional requirements from proposed nonfunctional criteria and keeping unresolved decisions explicit. Based on the user's review, the assistant grouped the functional requirements under Task Management, Daily Planning, and Daily Review, aligned their IDs with those groups, and refined the requirements for deletion, priority calculation, task completion, and daily progress. The assistant inserted the reviewed requirements above the existing user stories without changing them.
 
 Both documents are included in the same commit on `docs/ai-usage-github-feature-test` with the message: `docs: add reviewed requirements and record AI contribution`.
+
+## Requirements: Prioritization and Daily Review
+
+- **Date:** November 7, 2026
+- **AI tool:** ChatGPT (Codex), using the GitHub plugin
+- **Purpose:** Apply the reviewed Must, Should, and Could priorities and distinguish the ranked task list from the daily plan.
+
+### User Prompt (English Translation)
+
+> Now add all of that to `docs/requirements.md`. Remove the Open Decisions paragraph and add a heading for each of the two sections. Document this request in `docs/ai-usage.md` using the established format, and translate my prompt into English as well.
+
+### AI Contribution
+
+The assistant reviewed all functional and nonfunctional requirements and proposed Must, Should, or Could priorities. The user set FR-TM-05, FR-DP-04, and FR-DP-05 to Should and requested separate requirements for the ranked list of unfinished tasks (Must) and the selected day's plan (Should). The assistant applied the reviewed priorities, included importance and deadlines in the ranking requirement, renumbered the Daily Review requirements, and renamed the quality label for NFR-03 to Data-Persistence. The assistant removed the Open Decisions paragraph and grouped the document under Requirements Specification and User Stories, preserving the user story text.
+
+Both documents are included in the same commit on `docs/ai-usage-github-feature-test` with the message: `docs: prioritize reviewed requirements and record AI contribution`.
