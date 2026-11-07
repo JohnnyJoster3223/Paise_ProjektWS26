@@ -90,3 +90,21 @@ Both documents are included in the same commit on `docs/ai-usage-github-feature-
 The assistant reviewed all functional and nonfunctional requirements and proposed Must, Should, or Could priorities. The user set FR-TM-05, FR-DP-04, and FR-DP-05 to Should and requested separate requirements for the ranked list of unfinished tasks (Must) and the selected day's plan (Should). The assistant applied the reviewed priorities, included importance and deadlines in the ranking requirement, renumbered the Daily Review requirements, and renamed the quality label for NFR-03 to Data-Persistence. The assistant removed the Open Decisions paragraph and grouped the document under Requirements Specification and User Stories, preserving the user story text.
 
 Both documents are included in the same commit on `docs/ai-usage-github-feature-test` with the message: `docs: prioritize reviewed requirements and record AI contribution`.
+
+## MVP Scope Definition
+
+- **Date:** November 7, 2026
+- **AI tool:** Antigravity (Google DeepMind)
+- **Purpose:** Interactively elicit, define, and document the MVP scope for the Smart Task Manager based on existing requirements and user stories.
+
+### User Prompt (English Translation)
+
+> I have requirements and user stories for a task management app. Now the next step is to define an mvp scope; can you suggest one? The final scope will go into mvp.md
+
+### AI Contribution
+
+The assistant conducted an interactive interview to systematically resolve the key architectural, functional, and behavioral boundaries for the MVP. Decisions included establishing the Core Planning Loop (FR-TM-01–05, FR-DP-01–05, FR-DR-01, 02, 04), selecting a client-side web application with local persistence, implementing a deterministic priority formula, adopting atomic non-splitting schedule allocation, enabling date-by-date forward planning while keeping multi-day batch scheduling out of scope, and defining explicit non-goals and acceptance criteria. The assistant documented the agreed scope in `docs/mvp.md` and added this entry to `docs/ai-usage.md`.
+
+Both documents are included in the same commit on `docs/ai-usage-github-feature-test` with the message: `docs: define MVP scope and record AI contribution`.
+
+
