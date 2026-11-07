@@ -1,49 +1,52 @@
 # Requirements
 
-## Functional Requirements
+## Requirements Specification
 
-### 1. Task Management
+### Functional Requirements
 
-| ID | Requirement | Source |
-|---|---|---|
-| FR-TM-01 | The app shall allow users to create a task with a non-empty title and an optional description. A saved task shall appear in the task list. | UC-01 |
-| FR-TM-02 | The app shall display the task’s current values when editing. Saving valid changes shall update the task; cancelling shall leave it unchanged. | UC-02 |
-| FR-TM-03 | The app shall request confirmation before deleting a task. If the user confirms, the app shall remove the task from the task list and daily schedule. If the user cancels the deletion in the confirmation prompt, the app shall abort the deletion and leave the task unchanged. | UC-03 |
-| FR-TM-04 | The app shall allow users to add, change, or remove a deadline and an importance level independently when creating or editing a task. Neither field shall be required to create or schedule a task. | UC-04 |
-| FR-TM-05 | The app shall allow users to save an estimated task duration in minutes and shall reject zero or negative durations. | UC-05 |
+#### 1. Task Management
 
-### 2. Daily Planning
+| ID | Requirement | Source | Priority |
+|---|---|---|---|
+| FR-TM-01 | The app shall allow users to create a task with a non-empty title and an optional description. A saved task shall appear in the task list. | UC-01 | Must |
+| FR-TM-02 | The app shall display the task’s current values when editing. Saving valid changes shall update the task; cancelling shall leave it unchanged. | UC-02 | Must |
+| FR-TM-03 | The app shall request confirmation before deleting a task. If the user confirms, the app shall remove the task from the task list and daily schedule. If the user cancels the deletion in the confirmation prompt, the app shall abort the deletion and leave the task unchanged. | UC-03 | Should |
+| FR-TM-04 | The app shall allow users to add, change, or remove a deadline and an importance level independently when creating or editing a task. Neither field shall be required to create or schedule a task. | UC-04 | Must |
+| FR-TM-05 | The app shall allow users to save an estimated task duration in minutes and shall reject zero or negative durations. | UC-05 | Should |
 
-| ID | Requirement | Source |
-|---|---|---|
-| FR-DP-01 | The app shall allow users to save one or more availability windows for a selected day. Each window shall have a start and end time, and the end time must be later than the start time. | UC-06 |
-| FR-DP-02 | The app shall automatically calculate priority for unfinished tasks using the deadline and importance level when provided. It shall apply defined defaults for missing values. | UC-04, UC-07 |
-| FR-DP-03 | The app shall recalculate a task’s priority when its deadline or importance level is added, changed, or removed. The resulting priority shall be used when generating the daily schedule. | UC-04, UC-07 |
-| FR-DP-04 | The app shall allow users to generate a daily schedule. It shall consider unfinished tasks in priority order and use their estimated durations to allocate time. | UC-07 |
-| FR-DP-05 | Each scheduled task shall have a start and end time within a saved availability window. Scheduled tasks shall not overlap. Tasks that do not fit shall remain visible as unscheduled. | UC-06, UC-07 |
+#### 2. Daily Planning
 
-### 3. Daily Review
+| ID | Requirement | Source | Priority |
+|---|---|---|---|
+| FR-DP-01 | The app shall allow users to save one or more availability windows for a selected day. Each window shall have a start and end time, and the end time must be later than the start time. | UC-06 | Must |
+| FR-DP-02 | The app shall automatically calculate priority for unfinished tasks using the deadline and importance level when provided. It shall apply defined defaults for missing values. | UC-04, UC-07 | Must |
+| FR-DP-03 | The app shall recalculate a task’s priority when its deadline or importance level is added, changed, or removed. The resulting priority shall be used when generating the daily schedule. | UC-04, UC-07 | Must |
+| FR-DP-04 | The app shall allow users to generate a daily schedule. It shall consider unfinished tasks in priority order and use their estimated durations to allocate time. | UC-07 | Should |
+| FR-DP-05 | Each scheduled task shall have a start and end time within a saved availability window. Scheduled tasks shall not overlap. Tasks that do not fit shall remain visible as unscheduled. | UC-06, UC-07 | Should |
 
-| ID | Requirement | Source |
-|---|---|---|
-| FR-DR-01 | The app shall display scheduled tasks in chronological order with their title, start time, and end time. It shall display unscheduled tasks separately and show a clear message when the selected day has no scheduled tasks. | UC-08 |
-| FR-DR-02 | The app shall show how many scheduled tasks are completed and how many remain for the selected day. Marking a scheduled task as completed shall update these totals. If no tasks are scheduled, both totals shall be zero. | UC-10 |
-| FR-DR-03 | The app shall allow users to mark an unfinished task as completed. The completed status shall be saved, the task details shall remain accessible, and the task shall be excluded from future schedule generation. | UC-09 |
+#### 3. Daily Review
 
-## Nonfunctional Requirements
+| ID | Requirement | Source | Priority |
+|---|---|---|---|
+| FR-DR-01 | The app shall display all unfinished tasks in priority order, regardless of whether they are scheduled. The ranking shall be based on each task’s importance level and deadline, using the defined defaults when either value is missing. | UC-04, UC-08 | Must |
+| FR-DR-02 | The app shall display the daily plan for the selected day, with scheduled tasks in chronological order and their title, start time, and end time. It shall display unscheduled tasks separately and show a clear message when the selected day has no scheduled tasks. | UC-08 | Should |
+| FR-DR-03 | The app shall show how many scheduled tasks are completed and how many remain for the selected day. Marking a scheduled task as completed shall update these totals. If no tasks are scheduled, both totals shall be zero. | UC-10 | Could |
+| FR-DR-04 | The app shall allow users to mark an unfinished task as completed. The completed status shall be saved, the task details shall remain accessible, and the task shall be excluded from future schedule generation. | UC-09 | Must |
+
+### Nonfunctional Requirements
 
 These are proposed quality criteria for review.
 
-| ID | Quality | Proposed Requirement |
-|---|---|---|
-| NFR-01 | Usability | A user shall be able to identify the first unfinished scheduled task and its planned start time from the daily plan without opening individual task details. |
-| NFR-02 | Accessibility | Scheduled, unscheduled, and completed states shall be distinguishable without relying on colour alone. |
-| NFR-03 | Data reliability | After reopening the app, successfully saved task details, completion states, and availability windows shall still be available. |
-| NFR-04 | Data integrity | If saving a change fails, the app shall inform the user and preserve the last successfully saved version. It shall not present the failed change as saved. |
+| ID | Quality | Proposed Requirement | Priority |
+|---|---|---|---|
+| NFR-01 | Usability | A user shall be able to identify the first unfinished scheduled task and its planned start time from the daily plan without opening individual task details. | Should |
+| NFR-02 | Accessibility | Scheduled, unscheduled, and completed states shall be distinguishable without relying on colour alone. | Must |
+| NFR-03 | Data-Persistence | After reopening the app, successfully saved task details, completion states, and availability windows shall still be available. | Must |
+| NFR-04 | Data integrity | If saving a change fails, the app shall inform the user and preserve the last successfully saved version. It shall not present the failed change as saved. | Must |
 
-**Open decisions:** Define the importance levels, how deadlines affect priority, the defaults for missing values, and how ties are resolved. Decide whether a task needs a duration before it can be scheduled and whether a deadline is a hard scheduling constraint or only an input to priority.
+## User Stories
 
-## UC-01 — Create a Task
+### UC-01 — Create a Task
 
 **User Story:** As a user I want to create a task because I need to record responsibilities before planning my day.
 
@@ -55,7 +58,7 @@ These are proposed quality criteria for review.
 - A description can be added optionally.
 - The saved task appears in the task list.
 
-## UC-02 — Edit a Task
+### UC-02 — Edit a Task
 
 **User Story:** As a user I want to edit a task because its details or requirements may change.
 
@@ -67,7 +70,7 @@ These are proposed quality criteria for review.
 - Valid changes are saved and displayed.
 - Cancelling leaves the task unchanged.
 
-## UC-03 — Delete a Task
+### UC-03 — Delete a Task
 
 **User Story:** As a user I want to delete a task because responsibilities that no longer apply should not affect my planning.
 
@@ -79,7 +82,7 @@ These are proposed quality criteria for review.
 - A deleted task disappears from the task list and schedule.
 - Cancelling the confirmation preserves the task.
 
-## UC-04 — Set Optional Prioritization Fields
+### UC-04 — Set Optional Prioritization Fields
 
 **User Story:** As a user I want to optionally set a deadline and an importance level because these details help the app determine a task's priority.
 
@@ -93,7 +96,7 @@ These are proposed quality criteria for review.
 - Missing values are handled using defined defaults.
 - Changing either field triggers an updated priority calculation.
 
-## UC-05 — Estimate Task Duration
+### UC-05 — Estimate Task Duration
 
 **User Story:** As a user I want to estimate a task's duration because the daily schedule should reflect the time required to complete it.
 
@@ -105,7 +108,7 @@ These are proposed quality criteria for review.
 - Zero and negative values are rejected.
 - Scheduling uses the saved estimate when allocating time.
 
-## UC-06 — Define Available Time
+### UC-06 — Define Available Time
 
 **User Story:** As a busy individual I want to specify my available time because task planning must fit around my existing responsibilities.
 
@@ -117,7 +120,7 @@ These are proposed quality criteria for review.
 - Each window must end after it starts.
 - Tasks are scheduled only within the saved windows.
 
-## UC-07 — Generate a Daily Schedule
+### UC-07 — Generate a Daily Schedule
 
 **User Story:** As a user I want to generate a daily schedule because a structured plan helps me turn intentions into action.
 
@@ -130,7 +133,7 @@ These are proposed quality criteria for review.
 - Higher-priority tasks are allocated first when they fit.
 - Tasks that do not fit remain visible as unscheduled.
 
-## UC-08 — View the Daily Plan
+### UC-08 — View the Daily Plan
 
 **User Story:** As a user I want to view my daily plan because I need a clear overview of my planned activities.
 
@@ -143,7 +146,7 @@ These are proposed quality criteria for review.
 - Unscheduled tasks are displayed separately.
 - A day without scheduled tasks shows a clear empty state.
 
-## UC-09 — Complete a Task
+### UC-09 — Complete a Task
 
 **User Story:** As a user I want to mark a task as completed because my plan should reflect the work I have finished.
 
@@ -156,7 +159,7 @@ These are proposed quality criteria for review.
 - It is excluded from future automatic scheduling.
 - Its previous details remain accessible.
 
-## UC-10 — Review Daily Progress
+### UC-10 — Review Daily Progress
 
 **User Story:** As a user I want to review my daily progress because seeing completed work helps me recognize progress toward my goals.
 
