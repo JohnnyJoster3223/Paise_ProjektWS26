@@ -58,3 +58,19 @@ The assistant inspected the repository and its existing AI usage documentation, 
 The assistant drafted 15 use cases based on the README, each with a user story, a short description under 50 words, and acceptance criteria. At the user's request, deadline and importance were combined into optional prioritization fields. The assistant transferred the ten selected use cases to `docs/requirements.md`, renumbered them UC-01 through UC-10, and added this entry to `docs/ai-usage.md`.
 
 Both documents are included in the same commit on `docs/ai-usage-github-feature-test` with the message: `docs: add ten selected use cases and record AI contribution`.
+
+## Requirements: Functional and Nonfunctional Specification
+
+- **Date:** November 7, 2026
+- **AI tool:** ChatGPT (Codex), using the GitHub plugin
+- **Purpose:** Specify the functional and nonfunctional requirements for the Smart Task Manager and document the reviewed changes.
+
+### User Prompt (English Translation)
+
+> Commit these requirements to the ai-usage-github-feature-test branch. Add them to docs/requirements.md above the user stories. Make sure the user stories remain unchanged. Update docs/ai-usage.md with this contribution using the established format. Work precisely, avoid mistakes, and do not invent details.
+
+### AI Contribution
+
+The assistant used the README and the ten existing use cases to draft requirements, distinguishing functional requirements from proposed nonfunctional criteria and keeping unresolved decisions explicit. Based on the user's review, the assistant grouped the functional requirements under Task Management, Daily Planning, and Daily Review, aligned their IDs with those groups, and refined the requirements for deletion, priority calculation, task completion, and daily progress. The assistant inserted the reviewed requirements above the existing user stories without changing them.
+
+Both documents are included in the same commit on `docs/ai-usage-github-feature-test` with the message: `docs: add reviewed requirements and record AI contribution`.
