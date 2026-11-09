@@ -107,4 +107,6 @@ The assistant conducted an interactive interview to systematically resolve the k
 
 Both documents are included in the same commit on `docs/ai-usage-github-feature-test` with the message: `docs: define MVP scope and record AI contribution`.
 
+### Reflection
 
+Overall, using AI worked really well. After adjusting the initial AI output a bit (mostly regarding vague terms), the requirements and MVP scope were to our liking. For the MVP, we used the /grill-me skill to have the AI conduct an interview with us and ask questions about the key decisions. 
