@@ -109,4 +109,43 @@ Both documents are included in the same commit on `docs/ai-usage-github-feature-
 
 ### Reflection
 
-Overall, using AI worked really well. After adjusting the initial AI output a bit (mostly regarding vague terms), the requirements and MVP scope were to our liking. For the MVP, we used the /grill-me skill to have the AI conduct an interview with us and ask questions about the key decisions. 
+Overall, using AI worked really well. After adjusting the initial AI output a bit (mostly regarding vague terms), the requirements and MVP scope were to our liking. For the MVP, we used the /grill-me skill to have the AI conduct an interview with us and ask questions about the key decisions.
+
+## Phase 2: Software Architecture & Infrastructure Specification
+
+- **Date:** November 20, 2026
+- **AI tool:** Antigravity (Google DeepMind)
+- **Purpose:** Develop, evaluate, critically review, and document the comprehensive Phase 2 software architecture, hosting evaluation, Architecture Decision Records (ADRs), and C4 diagrams for the Smart Task Manager MVP under the Wayfinder issue-driven orchestration framework.
+
+### User Prompts & Workflow (English Translation)
+
+Key prompts and interactions throughout Phase 2 included:
+
+1. **Wayfinder Map & Frontier Initialization (`/wayfinder`):**
+   > Chart the way from the MVP scope in `docs/mvp.md` and Phase 2 requirements in `ai_docs/phases/phase_2_architecture.md` to a complete, defensible architecture specification package. Break the work down into decision tickets on the GitHub issue tracker (`wayfinder:map` #5).
+2. **Research Spikes:**
+   > Research static SPA hosting options for React/Vite (Cloudflare Pages, GitHub Pages, Vercel) with focus on zero costs, collaboration blockers, and HTML5 routing. Research UI component libraries (shadcn/ui, Tailwind CSS, DaisyUI, React Bootstrap) with focus on accessibility and typing.
+3. **Architecture Decisions & Grilling (`/grill-me`):**
+   > Interactively grill the architectural trade-offs: Client-Side SPA vs Fullstack C# ASP.NET Core; IndexedDB persistence strategy via Dexie.js vs LocalStorage/SQLite; deterministic 20–100 priority scoring and greedy atomic first-fit scheduling vs knapsack/CSP optimization; and 4-tier Modular Client Monolith component architecture with async Repository Seam.
+4. **Critical Questioning of AI Proposals:**
+   > Critically question and evaluate AI proposals that suggest unnecessary complexity, such as heavy Redux Toolkit/Saga state boilerplate, external constraint solvers, or distributed backend microservices.
+5. **Specification Authoring & Deliverable Validation:**
+   > Compile official MADR records in `docs/adr/`, comprehensive architecture specification in `docs/architecture.md`, hosting evaluation in `docs/hosting.md`, and validate all Phase 2 deliverables against the Definition of Done in `ai_docs/phases/phase_2_architecture.md` (leaving the reflection section to the team).
+
+### AI Contribution
+
+The assistant contributed across all stages of Phase 2:
+
+1. **Issue-Driven Wayfinding & Planning:** Created and maintained GitHub issue `Map: Phase 2 Software Architecture` (#5) and decomposed the architectural fog of war into eleven child decision tickets (#6 through #16) with native dependency tracking, preventing premature implementation and focusing each session on resolving a single concrete architectural decision.
+2. **Hosting & UI Library Research:** Conducted comprehensive comparative research documented in `docs/research/hosting-options.md` and `docs/research/ui-libraries.md`, identifying Cloudflare Pages' unmetered bandwidth and Git author neutrality as superior for student team collaboration over Vercel's Hobby commit-blocking paywall.
+3. **Architecture Variant Comparison & Evaluation:** Formulated an 8-dimension comparative evaluation matrix between Variant A (Pure Client-Side SPA in React/TypeScript) and Variant B (Client-Server Fullstack with C# ASP.NET Core Minimal API). Documented the decision outcome in `docs/adr/0001-architecture-variant-selection.md`, justifying Variant A for the MVP while architecting an asynchronous Repository Seam to preserve post-MVP migration to Variant B.
+4. **Persistence Strategy & Schema Design:** Designed normalized IndexedDB schemas using Dexie.js for tasks, availability windows, and daily schedules with client UUID v4 identity and declarative version migrations. Documented in `docs/adr/0002-client-side-persistence-strategy-and-schema.md`.
+5. **Domain Algorithmic Core:** Developed the mathematical specifications for the deterministic composite 20–100 priority scoring formula (piecewise urgency + discrete importance + 5-tier deterministic tie-breaker) and the greedy atomic first-fit slot scheduling engine with integer-minute time normalization. Documented in `docs/adr/0003-deterministic-priority-and-greedy-scheduling-engine.md`.
+6. **Component Architecture & Clean Module Interfaces:** Established the Four-Tier Modular Client Monolith (`Presentation`, `Application`, `Domain Core`, `Persistence Layer`) with clean TypeScript contracts (Repository Seam, partitioned React Contexts, pure domain functions) and viewer-friendly C4 Level 1 (System Context), C4 Level 2 (Container), and C4 Level 3 (Component) diagrams using text-only Mermaid syntax. Documented in `docs/adr/0004-component-architecture-and-module-interfaces.md` and `docs/architecture.md`.
+7. **Critical Evaluation of AI Proposals:** Actively identified, challenged, and rejected three AI-suggested overengineering antipatterns: (a) global Redux Toolkit/Saga boilerplate in favor of native partitioned React Contexts; (b) external CSP/0-1 Knapsack bin-packing solvers in favor of deterministic greedy scheduling (avoiding the "Knapsack Packing Anomaly" where urgent tasks are dropped for tight fits); and (c) premature distributed micro-backends in favor of a static edge SPA with an async Repository Seam.
+8. **Compilation of Official Deliverables:** Synthesized all findings into `docs/architecture.md`, `docs/hosting.md`, and official MADR records in `docs/adr/` (ADR-0001 through ADR-0004) accompanied by `docs/adr/README.md`.
+
+### Reflection
+
+Overall, using an AI agent through the wayfinder skill worked really well to navigate our decisions/next planning steps.
+The only real downsides were that the AI output was often quite long and formulated in a complex manner, making it hard to cognitively interact with the content. We got the feeling that compared to a "human-only" approach, the process of prompting the AI, then waiting, then reading through the long output only to accept it was quite different.
