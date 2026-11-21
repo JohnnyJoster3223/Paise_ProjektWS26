@@ -198,7 +198,8 @@ flowchart TD
 The Component diagram details the internal decomposition of the Single-Page Application, demonstrating the flow of control and dependency isolation across the four architectural tiers:
 
 ```mermaid
-flowchart TD
+%%{init: {"flowchart": {"curve": "linear"}}}%%
+flowchart LR
     classDef ui fill:#2A6F97,stroke:#014F86,color:#fff;
     classDef app fill:#014F86,stroke:#012A4A,color:#fff;
     classDef domain fill:#2C7DA0,stroke:#014F86,color:#fff;
@@ -224,10 +225,8 @@ flowchart TD
         TimeUtils["Time Arithmetic<br/>[timeUtils]<br/>Integer minutes normalization and merging"]:::domain
     end
 
-    subgraph PersistenceLayer ["4. Persistence Layer (Repository Seam)"]
-        TaskRepo["TaskRepository<br/>[Interface Seam]"]:::repo
-        WindowRepo["AvailabilityWindowRepository<br/>[Interface Seam]"]:::repo
-        ScheduleRepo["DailyScheduleRepository<br/>[Interface Seam]"]:::repo
+    subgraph PersistenceLayer ["4. Persistence Layer"]
+        Repositories["Repository Seam<br/>[TaskRepository / AvailabilityWindowRepository / DailyScheduleRepository]"]:::repo
         DexieAdapters["Dexie DB Adapters<br/>[SmartTaskManagerDB]<br/>ACID transactional storage"]:::repo
     end
 
@@ -240,23 +239,17 @@ flowchart TD
     TaskListView --> TasksHook
     ScheduleView --> ScheduleHook
     ScheduleView --> WindowsHook
-    DashboardView -.-> UIComponents
-    TaskListView -.-> UIComponents
-    ScheduleView -.-> UIComponents
 
-    TasksHook --> TaskRepo
+    TasksHook --> Repositories
     TasksHook --> PriorityCalc
-    ScheduleHook --> ScheduleRepo
+    ScheduleHook --> Repositories
     ScheduleHook --> SchedulerEngine
-    WindowsHook --> WindowRepo
+    WindowsHook --> Repositories
 
     SchedulerEngine --> PriorityCalc
     SchedulerEngine --> TimeUtils
 
-    TaskRepo --> DexieAdapters
-    WindowRepo --> DexieAdapters
-    ScheduleRepo --> DexieAdapters
-
+    Repositories --> DexieAdapters
     DexieAdapters --> IDBStorage
 ```
 
