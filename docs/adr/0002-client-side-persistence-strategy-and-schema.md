@@ -1,18 +1,18 @@
 ---
 status: "accepted"
 date: 2026-11-20
-decision-makers: "Development Team (Jakob Sapototzky / jakspt)"
-consulted: "Course Instructors, AI Architectural Advisory"
-informed: "Project Stakeholders"
+last-updated: 2026-11-21
+decision-makers: "Jakob Sapototzky"
 ---
 
 # Select IndexedDB via Dexie.js for Client-Side Persistence and Schema Management
 
 ## Context and Problem Statement
 
-Following the adoption of a Pure Client-Side Single-Page Application architecture ([ADR-0001](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/adr/0001-architecture-variant-selection.md)), we must select a concrete client-side persistence technology and design the underlying storage schema.
+Following the adoption of a Pure Client-Side Single-Page Application architecture ([ADR-0001](0001-architecture-variant-selection.md)), we must select a concrete client-side persistence technology and design the underlying storage schema.
 
-The persistence architecture must strictly satisfy two non-functional requirements from [requirements.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/requirements.md):
+The persistence architecture must strictly satisfy two non-functional requirements from [requirements.md](../requirements.md):
+
 1. **NFR-03 (Data Persistence):** After reopening the application or restarting the browser, all successfully saved task details, completion states, availability windows, and generated schedules must remain intact.
 2. **NFR-04 (Data Integrity):** If saving a change fails (e.g., storage quota exceeded or I/O error), the application must inform the user and preserve the last successfully saved version, never presenting failed changes as saved.
 
@@ -51,6 +51,7 @@ Chosen option: "Option 1: IndexedDB via Dexie.js", because it provides native AC
 ### Confirmation
 
 Compliance with this decision is confirmed through:
+
 1. **Automated Transaction Rollback Tests:** Integration tests using `fake-indexeddb` simulate storage failures and quota exceptions, verifying that aborted transactions leave existing records unmodified (confirming NFR-04).
 2. **Persistence Lifecycle Tests:** Tests verify that task creation, updates, and schedule assignments persist across simulated application reload cycles (confirming NFR-03).
 3. **Repository Interface Compliance:** TypeScript type checking ensures all Dexie adapters strictly fulfill the contracts defined in `src/repositories/interfaces.ts`.
@@ -91,68 +92,10 @@ State is managed entirely in-memory (e.g., via Zustand or React state) and async
 
 ## More Information
 
-### Database Schema Specification (`SmartTaskManagerDB`)
-
-The database defines three normalized object stores managed by Dexie:
-
-```typescript
-import Dexie, { Table } from 'dexie';
-
-export interface TaskRecord {
-  id: string; // Primary key: UUID v4
-  title: string;
-  description?: string;
-  durationMinutes: number; // Positive integer > 0 (FR-TM-05)
-  deadline?: string; // ISO 8601 string (e.g. "2026-11-25T18:00:00Z")
-  importance: 'LOW' | 'MEDIUM' | 'HIGH'; // FR-TM-04
-  isCompleted: boolean; // FR-DR-04
-  createdAt: string; // ISO 8601 UTC
-  updatedAt: string; // ISO 8601 UTC
-}
-
-export interface AvailabilityWindowRecord {
-  id: string; // Primary key: UUID v4
-  date: string; // ISO date "YYYY-MM-DD" (FR-DP-01)
-  startTime: string; // 24h format "HH:mm" (e.g. "09:00")
-  endTime: string; // 24h format "HH:mm" (e.g. "12:30", endTime > startTime)
-}
-
-export interface ScheduledTaskAllocation {
-  taskId: string;
-  startTime: string; // "HH:mm"
-  endTime: string;   // "HH:mm"
-}
-
-export interface DailyScheduleRecord {
-  date: string; // Primary key: "YYYY-MM-DD"
-  generatedAt: string; // ISO 8601 UTC
-  scheduledTasks: ScheduledTaskAllocation[]; // Chronologically ordered, non-overlapping
-}
-
-export class SmartTaskManagerDb extends Dexie {
-  tasks!: Table<TaskRecord, string>;
-  availabilityWindows!: Table<AvailabilityWindowRecord, string>;
-  dailySchedules!: Table<DailyScheduleRecord, string>;
-
-  constructor() {
-    super('SmartTaskManagerDB');
-
-    // Schema Version 1
-    this.version(1).stores({
-      tasks: 'id, isCompleted, importance, deadline, createdAt',
-      availabilityWindows: 'id, date',
-      dailySchedules: 'date'
-    });
-  }
-}
-
-export const db = new SmartTaskManagerDb();
-```
-
 ### Architectural Details
 
 1. **Availability Window Duration as Derived Property:**
-   Redundant `durationMinutes` columns are intentionally omitted from `availabilityWindows`. `startTime` and `endTime` are the single source of truth; window duration is derived on demand ($\text{toMinutes}(endTime) - \text{toMinutes}(startTime)$) to eliminate data synchronization bugs.
+   Redundant `durationMinutes` columns are intentionally omitted from `availabilityWindows`. `startTime` and `endTime` are the single source of truth; window duration is derived on demand (`toMinutes(endTime) - toMinutes(startTime)`) to eliminate data synchronization bugs.
 2. **Daily Schedule as Date Aggregate:**
    `dailySchedules` is stored as an aggregate document keyed by `date` (`"YYYY-MM-DD"`). Re-running the scheduling engine replaces the date's allocation atomically in a single write, preventing orphaned slot records.
 3. **Dynamic Derivation of Unscheduled Tasks:**
@@ -162,20 +105,8 @@ export const db = new SmartTaskManagerDb();
 5. **NFR-04 Failure Handling Workflow:**
    Write operations are wrapped in Dexie transactions. If an operation rejects (e.g., storage quota exceeded), Dexie rolls back uncommitted changes. The repository catches the error and throws a typed `PersistenceError`. The application layer reverts any optimistic UI updates and presents an informative toast to the user (*"Failed to save changes. Your previous data was preserved."*).
 
-### Client Persistence Comparison Matrix
+For the full TypeScript schema class and entity definitions, see:
 
-| Evaluation Criterion | Option 1: IndexedDB via Dexie.js (Selected) | Option 2: Browser LocalStorage | Option 3: In-Memory + Snapshots |
-|---|---|---|---|
-| **NFR-03 (Persistence across reloads)** | **High** (Resilient, durable indexed storage) | **Medium** (Vulnerable to 5MB quota overflow) | **Low** (Risk of losing unwritten snapshots) |
-| **NFR-04 (Data integrity on failure)** | **High** (Native ACID transactions & rollback) | **None** (No transactions; partial write corruption) | **Low** (Snapshot failure corrupts persistence) |
-| **Repository Seam Alignment** | **Native** (Returns Promises; matches ports/adapters) | **Poor** (Synchronous; requires artificial Promise wrapper) | **Poor** (Synchronous memory coupling) |
-| **Query Performance & Indexing** | **High** (Native B-Tree indexes on attributes) | **Low** (Full scan & deserialization required) | **High** (In-memory, but slow deserialization) |
-| **Storage Capacity** | **> 50 MB - GBs** (Dynamic origin quota) | **~5 MB** (Hard limit) | **~5 MB** (Bounded by localStorage) |
-| **Schema Migration Support** | **Built-in** (Declarative `db.version().upgrade()`) | **Manual** (Custom migration scripts required) | **Manual** (Custom state migration required) |
-| **Bundle Size Impact** | **Minimal** (~20 KB minified + gzipped) | **Zero** (Native API) | **Minimal** |
-
-### References & Links
-
-* Wayfinding Ticket: [#9 Select client-side persistence strategy and design schema (ADR-2)](https://github.com/JohnnyJoster3223/Paise_ProjektWS26/issues/9)
-* Parent Architecture Variant: [0001-architecture-variant-selection.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/adr/0001-architecture-variant-selection.md)
-* Component & Seam Architecture: [0004-component-architecture-and-module-interfaces.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/adr/0004-component-architecture-and-module-interfaces.md)
+* Schema Specification: [docs/architecture.md](../architecture.md) §7
+* Parent Architecture Variant: [0001-architecture-variant-selection.md](0001-architecture-variant-selection.md)
+* Component & Seam Architecture: [0004-component-architecture-and-module-interfaces.md](0004-component-architecture-and-module-interfaces.md)

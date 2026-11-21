@@ -1,16 +1,15 @@
 ---
 status: "accepted"
 date: 2026-11-20
-decision-makers: "Development Team (Jakob Sapototzky / jakspt)"
-consulted: "Course Instructors, AI Architectural Advisory"
-informed: "Project Stakeholders"
+last-updated: 2026-11-21
+decision-makers: "Jakob Sapototzky"
 ---
 
 # Select Pure Client-Side Single-Page Application (SPA) over Fullstack C# Backend
 
 ## Context and Problem Statement
 
-For Phase 2 of the Smart Task Manager project ([phase_2_architecture.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/ai_docs/phases/phase_2_architecture.md)), we must evaluate at least two distinct architectural variants against the functional and non-functional requirements specified in [requirements.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/requirements.md) and [mvp.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/mvp.md).
+For Phase 2 of the Smart Task Manager project ([phase_2_architecture.md](../../ai_docs/phases/phase_2_architecture.md)), we must evaluate at least two distinct architectural variants against the functional and non-functional requirements specified in [requirements.md](../requirements.md) and [mvp.md](../mvp.md).
 
 The primary goal of the application is to serve as an anti-procrastination planning tool that minimizes cognitive fatigue through transparent, deterministic task prioritization and automated single-day schedule generation. The project requirements explicitly scope out multi-user collaboration, server-side data synchronization, subtask hierarchies, and external calendar integrations for the MVP release.
 
@@ -19,7 +18,7 @@ The development team possesses strong engineering proficiency in TypeScript, Rea
 ## Decision Drivers
 
 * **Implementation Velocity & Simplicity:** Maximize feature completion within the semester timeframe by eliminating unnecessary distributed systems complexity, dual deployment pipelines, and cross-tier network boilerplate.
-* **Zero Operational Overhead & Hosting Costs:** Utilize static edge hosting ([hosting.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/hosting.md)) without database server maintenance, cold starts, cloud infrastructure bills, or operational uptime monitoring.
+* **Zero Operational Overhead & Hosting Costs:** Utilize static edge hosting ([hosting.md](../hosting.md)) via GitHub Pages without database server maintenance, cold starts, cloud infrastructure bills, or operational uptime monitoring.
 * **Interactive Latency & Instant Scheduling (NFR-01):** Provide sub-millisecond schedule recalculations and task status updates locally in the browser to eliminate cognitive friction and procrastination anxiety.
 * **Data Privacy & Local Ownership (NFR-03, NFR-04):** Keep user task and schedule data strictly on the user's local device, eliminating GDPR/privacy compliance concerns and backend authentication attack vectors.
 * **Architectural Extensibility & Clean Seams:** Maintain a clean boundary (Ports and Adapters / Repository Seam) that permits an evolutionary migration to a backend (Variant B) in post-MVP phases without rewrites of UI components or domain algorithms.
@@ -37,7 +36,7 @@ Chosen option: "Variant A: Pure Client-Side Single-Page Application (SPA) in Rea
 
 * Good, because the entire team operates within a unified TypeScript and React toolchain, increasing feature delivery velocity and reducing context switching.
 * Good, because priority scoring and schedule generation algorithms are implemented as pure, zero-dependency TypeScript modules testable in Vitest with 100% deterministic coverage and zero network mocks.
-* Good, because the application can be hosted completely free of charge as static assets on Cloudflare Pages or GitHub Pages with global CDN distribution.
+* Good, because the application can be hosted completely free of charge as static assets on GitHub Pages with global CDN distribution.
 * Good, because user data remains 100% private and offline-capable without authentication hurdles, server maintenance, or outage risks.
 * Bad, because user data is initially bound to a single browser profile on a specific device, lacking automatic multi-device cloud synchronization.
 * Bad, because clearing browser storage or utilizing private browsing mode could result in data loss if the user does not export their data.
@@ -46,7 +45,8 @@ Chosen option: "Variant A: Pure Client-Side Single-Page Application (SPA) in Rea
 ### Confirmation
 
 Compliance with this decision is confirmed through:
-1. **Architectural Seam Verification:** Code reviews and ESLint boundary rules verify that presentation components and application hooks interact with data exclusively through asynchronous repository interfaces (`TaskRepository`, `AvailabilityWindowRepository`, `DailyScheduleRepository`), preventing tight coupling to browser storage.
+
+1. **Architectural Seam Verification:** Code reviews and boundary rules verify that presentation components and application hooks interact with data exclusively through asynchronous repository interfaces (`TaskRepository`, `AvailabilityWindowRepository`, `DailyScheduleRepository`), preventing tight coupling to browser storage.
 2. **Static Asset Verification:** CI/CD build scripts verify that `npm run build` generates purely static client assets (`index.html`, JavaScript, CSS) deployable to static edge CDNs without server runtimes.
 3. **Automated Unit Testing:** The test suite in Vitest validates that domain logic executes purely in-memory with zero network or database dependencies.
 
@@ -78,39 +78,11 @@ The frontend SPA communicates via REST/JSON APIs with a backend service develope
 
 ## More Information
 
-### Evolutionary Path to Variant B (The Repository Seam)
+To prevent architectural lock-in, the client-side SPA introduces an asynchronous **Repository Seam** based on the Ports and Adapters (Hexagonal) pattern. Persistence interactions are abstracted behind asynchronous TypeScript interfaces (`TaskRepository`, `AvailabilityWindowRepository`, `DailyScheduleRepository`), allowing a future migration to an HTTP REST backend without modifying UI components or domain algorithms.
 
-To prevent architectural lock-in, Variant A introduces an explicit **Repository Seam** based on the Ports and Adapters (Hexagonal) pattern. Persistence interactions are abstracted behind asynchronous TypeScript interfaces:
+For complete architectural specifications, module contracts, and comparison matrices, see:
 
-```typescript
-export interface TaskRepository {
-  getAll(): Promise<TaskRecord[]>;
-  getById(id: string): Promise<TaskRecord | null>;
-  save(task: TaskRecord): Promise<void>;
-  delete(id: string): Promise<void>;
-}
-```
-
-For the MVP, this contract is satisfied by `DexieTaskRepository`. When evolving to Variant B in post-MVP phases:
-1. An `HttpTaskRepository` adapter is implemented to communicate with ASP.NET Core REST endpoints.
-2. The React UI components, application hooks, and domain scheduling algorithms remain completely unchanged.
-3. The domain core remains pure and can either continue executing client-side (local-first architecture) or be translated to C# for server-authoritative scheduling.
-
-### Architecture Variant Comparison Matrix
-
-| Evaluation Criterion | Variant A: Pure Client-Side SPA (Selected) | Variant B: Fullstack C# ASP.NET Core API |
-|---|---|---|
-| **Alignment with MVP Scope** | **High** (Directly matches single-user offline MVP) | **Low** (Over-engineered for single-user MVP) |
-| **Operational & Hosting Cost** | **Zero** (Static hosting on Cloudflare/GitHub Pages) | **Medium/High** (Container hosting + Database tier) |
-| **Interactive Latency** | **Sub-millisecond** (Local execution, zero network calls) | **Variable** (Dependent on HTTP latency & cold starts) |
-| **Offline Capability** | **Native** (Runs 100% locally in browser) | **Complex** (Requires PWA caching & sync outbox) |
-| **Multi-Device Synchronization** | **None** (Bound to local browser storage) | **Native** (Centralized database) |
-| **Multi-User Collaboration** | **None** (Explicitly out of scope for MVP) | **Native** (Central authentication & RBAC) |
-| **Implementation Velocity** | **High** (Single language, zero backend boilerplate) | **Medium/Low** (Two runtimes, migrations, API contracts) |
-
-### References & Links
-
-* Wayfinding Ticket: [#8 Evaluate and justify architecture variants (Client-Side SPA vs Fullstack C#)](https://github.com/JohnnyJoster3223/Paise_ProjektWS26/issues/8)
-* Phase Requirements: [ai_docs/phases/phase_2_architecture.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/ai_docs/phases/phase_2_architecture.md)
-* Static Hosting Evaluation: [docs/hosting.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/hosting.md)
-* Subsequent Decisions: [0002-client-side-persistence-strategy-and-schema.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/adr/0002-client-side-persistence-strategy-and-schema.md), [0004-component-architecture-and-module-interfaces.md](file:///c:/Users/Jakob/Documents/Master%20SE/Paise_ProjektWS26/docs/adr/0004-component-architecture-and-module-interfaces.md)
+* Overall Component Architecture and Seams: [docs/architecture.md](../architecture.md) §3 and §6
+* Client-Side Persistence Engine: [ADR-0002](0002-client-side-persistence-strategy-and-schema.md)
+* Component Architecture & Interfaces: [ADR-0004](0004-component-architecture-and-module-interfaces.md)
+* Static Hosting Evaluation: [docs/hosting.md](../hosting.md)
